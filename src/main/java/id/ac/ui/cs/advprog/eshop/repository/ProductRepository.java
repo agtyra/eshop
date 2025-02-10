@@ -6,12 +6,16 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
+        if (product.getProductId() == null || product.getProductId().isEmpty()) {
+            product.setProductId(UUID.randomUUID().toString()); // Generate a unique ID
+        }
         productData.add(product);
         return product;
     }
@@ -19,4 +23,22 @@ public class ProductRepository {
     public Iterator<Product> findAll() {
         return productData.iterator();
     }
+
+    public Product findProductById(String productId) {
+        return productData.stream()
+                .filter(p -> p.getProductId().equals(productId))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Product edit(Product updatedProduct) {
+        Product existingProduct = findProductById(updatedProduct.getProductId());
+        if (existingProduct != null) {
+            int index = productData.indexOf(existingProduct);
+            productData.set(index, updatedProduct);
+            return updatedProduct;
+        }
+        return null;
+    }
+
 }
