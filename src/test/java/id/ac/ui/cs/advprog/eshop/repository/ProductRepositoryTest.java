@@ -124,5 +124,31 @@ class ProductRepositoryTest {
         assertTrue(productIterator.hasNext());
     }
 
+    @Test
+    void testCreateProductWithoutId() {
+        Product product = new Product();
+        product.setProductName("Shampoo Without ID");
+        product.setProductQuantity(100);
+
+        Product createdProduct = productRepository.create(product);
+
+        assertNotNull(createdProduct.getProductId(), "Product ID should not be null");
+        assertFalse(createdProduct.getProductId().isEmpty(), "Product ID should not be empty");
+    }
+
+    @Test
+    void testCreateProductWithEmptyId() {
+        Product product = new Product();
+        product.setProductId("");  // Empty string instead of null
+        product.setProductName("Test Product");
+        product.setProductQuantity(10);
+
+        Product createdProduct = productRepository.create(product);
+
+        assertNotNull(createdProduct.getProductId(), "Product ID should not be null");
+        assertFalse(createdProduct.getProductId().isEmpty(), "Product ID should not be empty");
+    }
+
+
 }
 
