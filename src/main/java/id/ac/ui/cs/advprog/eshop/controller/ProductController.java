@@ -17,7 +17,6 @@ public class ProductController {
         this.service = service;
     }
 
-
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
