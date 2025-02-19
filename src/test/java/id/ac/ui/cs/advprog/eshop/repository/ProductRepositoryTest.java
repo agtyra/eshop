@@ -18,6 +18,8 @@ class ProductRepositoryTest {
     ProductRepository productRepository;
     @BeforeEach
     void setUp() {
+        // Clear repository before each test
+        productRepository = new ProductRepository();
     }
     @Test
     void testCreateAndFind() {
