@@ -1,6 +1,7 @@
 # Kezia Salsalina Agtyra Sebayang - 2306172086
 
-## Module 1
+<Details>
+<Summary><b>Module 1</b></Summary>
 
 ### Reflection 1
 One of the main principles I followed in this project was the Single Responsibility Principle (SRP), 
@@ -21,3 +22,20 @@ After writing the unit test, I realized how important unit test is for maintaini
 The number of unit tests needed depends on the complexity of the class. To verify that our unit tests are sufficient, we can use code coverage tools to measure how much of our code is tested. However, having 100% code coverage does not mean the code is bug-free, as it only measures whether the code was executed, not whether it behaves correctly in all scenarios.
 
 When writing another functional test for creating product, I noticed that the structure was almost identical to the previous test. This leads to code duplication, which reduces maintainability. The setup procedures, instance variables, and WebDriver initialization were repeated across different test classes. This means that if any configuration changes, multiple files would need to be updated, increasing the risk of inconsistencies. Instead of repeating the same setup logic, I think a better approach would be to extract common functionalities into a base class that all functional tests can inherit from. This would keep the test suite modular and easier to maintain.
+
+</Details>
+
+<Details>
+<Summary><b>Module 2</b></Summary>
+
+### Reflection
+
+The issues that I fixed:
+- Removing Public Modifiers – I eliminated unnecessary public modifiers where they were redundant, following modern coding conventions.
+- Grouping Dependencies – I structured and grouped dependencies more logically, improving readability and maintainability in my project configuration files.
+- Removing Unnecessary Exception Declarations – I identified and removed redundant throws declarations in method signatures to simplify exception handling.
+- Cleaning Up Unused Imports – I removed unused imports to declutter the codebase and improve readability.
+
+Looking at my current CI/CD workflows, I think they mostly meet the definition of Continuous Integration and Continuous Deployment. The ci.yml workflow ensures that every push and pull request triggers automated tests, which aligns with CI by making sure new changes don’t break the code. The deploy.yml workflow also supports CD because it automatically redeploys the application to Koyeb whenever changes are pushed to the main branch, removing the need for manual deployment. Additionally, the scorecard.yml and sonarcloud.yml workflows contribute to maintaining security and code quality, which reinforces CI by catching potential issues early.
+
+</Details>
