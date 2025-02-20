@@ -35,6 +35,9 @@ The issues that I fixed:
 - Grouping Dependencies – I structured and grouped dependencies more logically, improving readability and maintainability in my project configuration files.
 - Removing Unnecessary Exception Declarations – I identified and removed redundant throws declarations in method signatures to simplify exception handling.
 - Cleaning Up Unused Imports – I removed unused imports to declutter the codebase and improve readability.
+- Removed Field Injection – I initially removed field injection but had to make additional changes to fully eliminate it from the project. This was necessary to align with best practices and improve code maintainability.
+- Added Assertions to Test Cases – Some of my test cases were incomplete, so I added at least one assertion to ensure proper validation of expected behavior.
+- Implemented Logic in Empty Methods – There were methods in the code that had no implementation, which could lead to unintended behavior. I addressed this by adding the necessary functionality.
 
 Looking at my current CI/CD workflows, I think they mostly meet the definition of Continuous Integration and Continuous Deployment. The ci.yml workflow ensures that every push and pull request triggers automated tests, which aligns with CI by making sure new changes don’t break the code. The deploy.yml workflow also supports CD because it automatically redeploys the application to Koyeb whenever changes are pushed to the main branch, removing the need for manual deployment. Additionally, the scorecard.yml and sonarcloud.yml workflows contribute to maintaining security and code quality, which reinforces CI by catching potential issues early.
 
