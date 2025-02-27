@@ -10,11 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -51,42 +50,41 @@ class ProductServiceTest {
         List<Product> products = new ArrayList<>();
         products.add(sampleProduct);
 
-        Iterator<Product> productIterator = products.iterator();
-        when(productRepository.findAll()).thenReturn(productIterator);
+        when(productRepository.findAll()).thenReturn(products);
 
         List<Product> result = productService.findAll();
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        assertEquals("1", result.getFirst().getProductId());
+        assertEquals("1", result.get(0).getProductId());
         verify(productRepository, times(1)).findAll();
     }
 
     @Test
     void testFindProductById() {
-        when(productRepository.findProductById("1")).thenReturn(sampleProduct);
+        when(productRepository.findById("1")).thenReturn(sampleProduct);
 
         Product foundProduct = productService.findProductById("1");
 
         assertNotNull(foundProduct);
         assertEquals("1", foundProduct.getProductId());
-        verify(productRepository, times(1)).findProductById("1");
+        verify(productRepository, times(1)).findById("1");
     }
 
     @Test
     void testEditProduct() {
-        when(productRepository.edit(any(Product.class))).thenReturn(sampleProduct);
+        when(productRepository.update(anyString(), any(Product.class))).thenReturn(sampleProduct);
 
         Product editedProduct = productService.edit(sampleProduct);
 
         assertNotNull(editedProduct);
         assertEquals("1", editedProduct.getProductId());
-        verify(productRepository, times(1)).edit(any(Product.class));
+        verify(productRepository, times(1)).update(anyString(), any(Product.class));
     }
 
     @Test
     void testDeleteProduct() {
-        doNothing().when(productRepository).delete("1");
+        doNothing().when(productRepository).delete(anyString());
 
         assertDoesNotThrow(() -> productService.delete("1"));
 
