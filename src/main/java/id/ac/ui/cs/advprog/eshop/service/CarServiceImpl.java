@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class CarServiceImpl implements CarService {
+
     private final ICarRepository carRepository;
 
     @Autowired
@@ -16,9 +17,10 @@ public class CarServiceImpl implements CarService {
         this.carRepository = carRepository;
     }
 
+
     @Override
     public Car create(Car car) {
-        return carRepository.create(car); // Fix return type
+        return carRepository.create(car);
     }
 
     @Override
@@ -30,7 +32,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car findById(String carId) {
-        return carRepository.findById(carId); // Fix return type
+        return carRepository.findById(carId);
     }
 
     @Override
