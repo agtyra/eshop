@@ -3,42 +3,39 @@ package id.ac.ui.cs.advprog.eshop.service;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.IProductRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-
     private final IProductRepository productRepository;
 
+    @Autowired
     public ProductServiceImpl(IProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
     public Product create(Product product) {
-        productRepository.create(product);
-        return product;
+        return productRepository.create(product);
     }
 
     @Override
     public List<Product> findAll() {
-        Iterator<Product> productIterator = productRepository.findAll();
-        List<Product> allProduct = new ArrayList<>();
-        productIterator.forEachRemaining(allProduct::add);
-        return allProduct;
+        List<Product> allProducts = new ArrayList<>();
+        productRepository.findAll().forEach(allProducts::add);
+        return allProducts;
     }
 
     @Override
     public Product findProductById(String productId) {
-        return productRepository.findProductById(productId);
+        return productRepository.findById(productId); // Match method name with IRepository
     }
 
     @Override
     public Product edit(Product product) {
-        return productRepository.edit(product);
+        return productRepository.update(product.getProductId(), product); // Match method name
     }
 
     @Override
