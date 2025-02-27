@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
+import id.ac.ui.cs.advprog.eshop.repository.IProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,8 +11,9 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepository;
-    public ProductServiceImpl(ProductRepository productRepository) {
+    private final IProductRepository productRepository;
+
+    public ProductServiceImpl(IProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
