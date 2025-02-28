@@ -58,14 +58,14 @@ class ProductRepositoryTest {
         productRepository.create(product2);
 
         List<Product> products = new ArrayList<>();
-        productRepository.findAll().forEach(products::add); // Ensure ordering
+        productRepository.findAll().forEach(products::add);
 
-        assertEquals(2, products.size());  // Ensure both are present
+        assertEquals(2, products.size());
 
         List<String> expectedIds = List.of(product1.getProductId(), product2.getProductId());
         List<String> actualIds = List.of(products.get(0).getProductId(), products.get(1).getProductId());
 
-        assertTrue(expectedIds.containsAll(actualIds) && actualIds.containsAll(expectedIds)); // Order-independent check
+        assertTrue(expectedIds.containsAll(actualIds) && actualIds.containsAll(expectedIds));
     }
 
 
@@ -151,4 +151,23 @@ class ProductRepositoryTest {
         assertNotNull(createdProduct.getProductId(), "Product ID should not be null");
         assertFalse(createdProduct.getProductId().isEmpty(), "Product ID should not be empty");
     }
+
+    @Test
+    void testFindByIdNotFound() {
+        Product product1 = new Product();
+        product1.setProductId("kdr438e9f-1c39-460e-0000-32af6af63gf4");
+        product1.setProductName("Garpu");
+        productRepository.create(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("kdr438e9f-424r-460e-0000-32af6af63gf4");
+        product2.setProductName("Sendok");
+        productRepository.create(product2);
+
+        Product result = productRepository.findById("non-existent-id");
+
+        assertNull(result, "findById should return null when the product is not found.");
+    }
+
+
 }
