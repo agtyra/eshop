@@ -42,3 +42,46 @@ The issues that I fixed:
 Looking at my current CI/CD workflows, I think they mostly meet the definition of Continuous Integration and Continuous Deployment. The ci.yml workflow ensures that every push and pull request triggers automated tests, which aligns with CI by making sure new changes don’t break the code. The deploy.yml workflow also supports CD because it automatically redeploys the application to Koyeb whenever changes are pushed to the main branch, removing the need for manual deployment. Additionally, the scorecard.yml and sonarcloud.yml workflows contribute to maintaining security and code quality, which reinforces CI by catching potential issues early.
 
 </Details>
+
+<Details>
+<Summary><b>Module 3</b></Summary>
+
+## Reflection
+
+### 1. Principles Applied to the Project
+
+The Single Responsibility Principle (SRP) was the first principle I implemented. Initially, ProductController handled both request processing and business logic, for Product and Car. To address this, I moved CarController to a separate file. 
+
+Next, I applied the Open/Closed Principle (OCP) by introducing the ICarRepository and IProductRepository interfaces.
+
+The Liskov Substitution Principle (LSP) was inherently followed in the project, even though I did not explicitly modify the code to apply it. Since CarServiceImpl correctly implements CarService, and ProductServiceImpl implements ProductService, any subclass or alternative implementation can replace them without breaking the system.
+
+The Interface Segregation Principle (ISP) was also applied by splitting the repository interface into two smaller, more focused interfaces: ReadOnlyRepository for retrieval operations and WriteRepository for data modification.
+
+Finally, I ensured compliance with the Dependency Inversion Principle (DIP) by modifying CarController to depend on the CarService interface instead of CarServiceImpl. 
+
+### 2. Advantages of Applying SOLID Principles
+
+Applying the SOLID principles made the project easier to maintain, test, and scale. By following SRP, CarController now focuses only on handling requests, making the code cleaner and more manageable. 
+
+The use of OCP ensures that repository implementations can be extended without modifying existing code, allowing for future enhancements without breaking functionality.
+
+The LSP-compliant structure ensures that alternative implementations of CarService or ProductService can be used interchangeably, supporting better code reusability and testing
+
+With ISP, repositories now only implement the methods they actually need, preventing unnecessary dependencies and making the code more modular. 
+
+Additionally, DIP allows CarController to work with any CarService implementation, making the system flexible and test-friendly.
+
+### 3. Disadvantages of Not Applying SOLID Principles
+
+If SOLID principles had not been applied, the project would have been harder to maintain and scale. Without SRP, ProductController would still handle multiple responsibilities, making modifications error-prone and confusing. 
+
+Ignoring OCP would mean every new repository implementation requires modifying existing repository classes, increasing the risk of breaking functionality.
+
+If LSP were violated, replacing CarServiceImpl with another implementation could lead to unexpected failures, reducing code flexibility.
+
+Without ISP, repository interfaces would be filled with unnecessary methods, forcing classes to implement operations they do not need. 
+
+Lastly, neglecting DIP would result in CarController being tightly coupled to CarServiceImpl, making it difficult to replace the service for testing or future upgrades.
+
+</Details>
