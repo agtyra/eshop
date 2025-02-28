@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.repository;
-
+import java.util.List;
+import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,20 +9,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Iterator;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
 
     @InjectMocks
     ProductRepository productRepository;
+
     @BeforeEach
     void setUp() {
-        // Clear repository before each test
         productRepository = new ProductRepository();
     }
+
     @Test
     void testCreateAndFind() {
         Product product = new Product();
@@ -29,9 +29,9 @@ class ProductRepositoryTest {
         product.setProductQuantity(100);
         productRepository.create(product);
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product savedProduct = productIterator.next();
+        Iterable<Product> products = productRepository.findAll();
+        assertTrue(products.iterator().hasNext());
+        Product savedProduct = products.iterator().next();
         assertEquals(product.getProductId(), savedProduct.getProductId());
         assertEquals(product.getProductName(), savedProduct.getProductName());
         assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
@@ -39,8 +39,8 @@ class ProductRepositoryTest {
 
     @Test
     void testFindAllIfEmpty() {
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertFalse(productIterator.hasNext());
+        Iterable<Product> products = productRepository.findAll();
+        assertFalse(products.iterator().hasNext());
     }
 
     @Test
@@ -57,17 +57,20 @@ class ProductRepositoryTest {
         product2.setProductQuantity(50);
         productRepository.create(product2);
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
-        Product savedProduct = productIterator.next();
-        assertEquals(product1.getProductId(), savedProduct.getProductId());
-        savedProduct = productIterator.next();
-        assertEquals(product2.getProductId(), savedProduct.getProductId());
-        assertFalse(productIterator.hasNext());
+        List<Product> products = new ArrayList<>();
+        productRepository.findAll().forEach(products::add);
+
+        assertEquals(2, products.size());
+
+        List<String> expectedIds = List.of(product1.getProductId(), product2.getProductId());
+        List<String> actualIds = List.of(products.get(0).getProductId(), products.get(1).getProductId());
+
+        assertTrue(expectedIds.containsAll(actualIds) && actualIds.containsAll(expectedIds));
     }
 
+
     @Test
-    void testEditProductSuccess() {
+    void testUpdateProductSuccess() {
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product.setProductName("Soap");
@@ -79,22 +82,20 @@ class ProductRepositoryTest {
         updatedProduct.setProductName("Sabun");
         updatedProduct.setProductQuantity(34);
 
-        Product result = productRepository.edit(updatedProduct);
-
+        Product result = productRepository.update(updatedProduct.getProductId(), updatedProduct);
         assertNotNull(result);
         assertEquals("Sabun", result.getProductName());
         assertEquals(34, result.getProductQuantity());
     }
 
     @Test
-    void testEditProductNotFound() {
+    void testUpdateProductNotFound() {
         Product updatedProduct = new Product();
         updatedProduct.setProductId("eb558e9f-1c39-460e-8860-71af6af63kms");
         updatedProduct.setProductName("Napkin");
         updatedProduct.setProductQuantity(10);
 
-        Product result = productRepository.edit(updatedProduct);
-
+        Product result = productRepository.update(updatedProduct.getProductId(), updatedProduct);
         assertNull(result);
     }
 
@@ -108,8 +109,8 @@ class ProductRepositoryTest {
 
         productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63bl9");
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertFalse(productIterator.hasNext());
+        Iterable<Product> products = productRepository.findAll();
+        assertFalse(products.iterator().hasNext());
     }
 
     @Test
@@ -122,8 +123,8 @@ class ProductRepositoryTest {
 
         productRepository.delete("eb558e9f-1c39-460e-8860-71af6af63gf4");
 
-        Iterator<Product> productIterator = productRepository.findAll();
-        assertTrue(productIterator.hasNext());
+        Iterable<Product> products = productRepository.findAll();
+        assertTrue(products.iterator().hasNext());
     }
 
     @Test
@@ -141,7 +142,7 @@ class ProductRepositoryTest {
     @Test
     void testCreateProductWithEmptyId() {
         Product product = new Product();
-        product.setProductId("");  // Empty string instead of null
+        product.setProductId("");
         product.setProductName("Test Product");
         product.setProductQuantity(10);
 
@@ -151,6 +152,22 @@ class ProductRepositoryTest {
         assertFalse(createdProduct.getProductId().isEmpty(), "Product ID should not be empty");
     }
 
+    @Test
+    void testFindByIdNotFound() {
+        Product product1 = new Product();
+        product1.setProductId("kdr438e9f-1c39-460e-0000-32af6af63gf4");
+        product1.setProductName("Garpu");
+        productRepository.create(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("kdr438e9f-424r-460e-0000-32af6af63gf4");
+        product2.setProductName("Sendok");
+        productRepository.create(product2);
+
+        Product result = productRepository.findById("non-existent-id");
+
+        assertNull(result, "findById should return null when the product is not found.");
+    }
+
 
 }
-
