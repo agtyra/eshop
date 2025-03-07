@@ -18,17 +18,30 @@ public class PaymentServiceImpl implements PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
+    @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
-        return null;
+        String paymentId = UUID.randomUUID().toString();
+        Payment payment = new Payment(paymentId, method, paymentData);
+        paymentRepository.save(payment);
+        return payment;
     }
 
-    public void setStatus(Payment payment, String status) {}
+    @Override
+    public void setStatus(Payment payment, String status) {
+        if (!PaymentStatus.contains(status)) {
+            throw new IllegalArgumentException("Invalid payment status.");
+        }
+        payment.setStatus(status);
+        paymentRepository.save(payment);
+    }
 
+    @Override
     public Payment getPayment(String paymentId) {
-        return null;
+        return paymentRepository.findById(paymentId);
     }
 
+    @Override
     public List<Payment> getAllPayments() {
-        return null;
+        return paymentRepository.getAllPayments();
     }
 }
