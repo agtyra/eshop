@@ -85,3 +85,21 @@ Without ISP, repository interfaces would be filled with unnecessary methods, for
 Lastly, neglecting DIP would result in CarController being tightly coupled to CarServiceImpl, making it difficult to replace the service for testing or future upgrades.
 
 </Details>
+
+<Details>
+<Summary><b>Module 4</b></Summary>
+
+### 1. Test-Driven Development (TDD) Workflow
+
+TDD was useful because it helped me ensure correctness, maintainability, and a smooth workflow. I started by writing failing tests (RED commits), which helped define expected behavior early. Implementing functionality (GREEN commits) ensured correctness, like in testCreateOrderInvalidStatus(), preventing invalid statuses. Refactoring (REFACTOR commits) improved maintainability without breaking existing tests.
+
+My tests gave quick feedback, allowing me to catch issues early, though I could improve by adding more edge cases. Overall, TDD improved my code structure and reliability.
+
+### 2. F.I.R.S.T Principles in My Tests
+- Fast : Tests run quickly without external dependencies, e.g., OrderTest.java.
+- Independent : No test relies on another, as seen in OrderRepositoryTest.java.
+- Repeatable : Runs consistently with the same inputs, like testSetStatusToCancelled().
+- Self-validating : Clear pass/fail outcomes, e.g., exceptions in testUpdateStatusInvalidOrderId().
+- Timely : Tests were written before implementation, proven by my Red-Green commits.
+
+</Details>
